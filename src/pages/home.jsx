@@ -8,5 +8,3 @@ export default function Home() {
 }
 
 
-//
-//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
