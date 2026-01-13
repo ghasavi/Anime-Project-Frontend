@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { supabase } from "../../utils/supabase";
@@ -16,7 +17,10 @@ const GENRE_OPTIONS = [
   "Sports",
 ];
 
-export default function AddAnime() {
+export default function EditAnime() {
+  const { id } = useParams(); // anime id
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [altNames, setAltNames] = useState("");
   const [description, setDescription] = useState("");
@@ -25,6 +29,7 @@ export default function AddAnime() {
   const [releaseYear, setReleaseYear] = useState("");
   const [rating, setRating] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [existingImage, setExistingImage] = useState("");
   const [episodes, setEpisodes] = useState("");
   const [status, setStatus] = useState("Completed");
   const [loading, setLoading] = useState(false);
@@ -32,6 +37,35 @@ export default function AddAnime() {
 
   const fileInputRef = useRef(null);
   const backendURL = "http://localhost:3000/api/animes";
+
+  /* ================= FETCH ANIME ================= */
+  useEffect(() => {
+    const fetchAnime = async () => {
+      try {
+        const token = localStorage.getItem("adminToken"); // make sure you have this set
+      const { data } = await axios.get(`${backendURL}/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const anime = data.anime || data;
+
+        setName(anime.name || "");
+        setAltNames(anime.altNames?.join(", ") || "");
+        setDescription(anime.description || "");
+        setGenres(anime.genres || []);
+        setTags(anime.tags?.join(", ") || "");
+        setReleaseYear(anime.releaseYear || "");
+        setRating(anime.rating || "");
+        setEpisodes(anime.episodes || "");
+        setStatus(anime.status || "Completed");
+        setExistingImage(anime.image || "");
+       } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || "Failed to load anime");
+    }
+  };
+
+    fetchAnime();
+  }, [id]);
 
   const toggleGenre = (genre) => {
     setGenres((prev) =>
@@ -41,12 +75,13 @@ export default function AddAnime() {
     );
   };
 
+  /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
 
     const token = localStorage.getItem("adminToken");
-    if (!token) return toast.error("Admin token missing. Please login.");
+    if (!token) return toast.error("Admin token missing");
 
     const newErrors = {};
     const currentYear = new Date().getFullYear();
@@ -69,8 +104,6 @@ export default function AddAnime() {
     if (episodes && episodes <= 0)
       newErrors.episodes = "Episodes must be a positive number";
 
-    if (!imageFile) newErrors.image = "Image is required";
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -79,17 +112,23 @@ export default function AddAnime() {
     setLoading(true);
 
     try {
-      // Upload image
-      const fileName = `${Date.now()}_${imageFile.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from("images")
-        .upload(fileName, imageFile);
+      let imageURL = existingImage;
 
-      if (uploadError) throw new Error("Image upload failed");
+      // upload new image only if changed
+      if (imageFile) {
+        const fileName = `${Date.now()}_${imageFile.name}`;
+        const { error } = await supabase.storage
+          .from("images")
+          .upload(fileName, imageFile);
 
-      const { data } = supabase.storage
-        .from("images")
-        .getPublicUrl(fileName);
+        if (error) throw new Error("Image upload failed");
+
+        const { data } = supabase.storage
+          .from("images")
+          .getPublicUrl(fileName);
+
+        imageURL = data.publicUrl;
+      }
 
       const animeData = {
         name,
@@ -101,34 +140,20 @@ export default function AddAnime() {
         tags: tags ? tags.split(",").map((t) => t.trim()) : [],
         releaseYear: releaseYear ? parseInt(releaseYear) : undefined,
         rating: rating ? parseFloat(rating) : undefined,
-        image: data.publicUrl,
+        image: imageURL,
         episodes: episodes ? parseInt(episodes) : undefined,
         status,
       };
 
-      const res = await axios.post(backendURL, animeData, {
+      await axios.put(`${backendURL}/${id}`, animeData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      toast.success(res.data?.message || "Anime added successfully");
-
-      // Reset form
-      setName("");
-      setAltNames("");
-      setDescription("");
-      setGenres([]);
-      setTags("");
-      setReleaseYear("");
-      setRating("");
-      setEpisodes("");
-      setStatus("Completed");
-      setImageFile(null);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      toast.success("Anime updated successfully");
+      navigate("/admin/manage-anime");
     } catch (err) {
       console.error(err);
-      toast.error(
-        err.response?.data?.message || "Failed to add anime"
-      );
+      toast.error(err.response?.data?.message || "Failed to update anime");
     } finally {
       setLoading(false);
     }
@@ -136,30 +161,30 @@ export default function AddAnime() {
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow mt-6">
-      <h1 className="text-2xl font-bold mb-4">Add New Anime</h1>
+      <h1 className="text-2xl font-bold mb-4">Edit Anime</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="text"
-          placeholder="Anime Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          placeholder="Anime Name"
           className="border p-2 rounded"
         />
         {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
 
         <input
           type="text"
-          placeholder="Alternative Names (comma separated)"
           value={altNames}
           onChange={(e) => setAltNames(e.target.value)}
+          placeholder="Alternative Names"
           className="border p-2 rounded"
         />
 
         <textarea
-          placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
           className="border p-2 rounded"
         />
         {errors.description && (
@@ -188,18 +213,18 @@ export default function AddAnime() {
 
         <input
           type="text"
-          placeholder="Tags (comma separated, optional)"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
+          placeholder="Tags (optional)"
           className="border p-2 rounded"
         />
 
         <div className="flex gap-4">
           <input
             type="number"
-            placeholder="Release Year"
             value={releaseYear}
             onChange={(e) => setReleaseYear(e.target.value)}
+            placeholder="Release Year"
             className="border p-2 rounded flex-1"
           />
           <input
@@ -207,9 +232,9 @@ export default function AddAnime() {
             min="1"
             max="5"
             step="0.1"
-            placeholder="Rating (1 - 5)"
             value={rating}
             onChange={(e) => setRating(e.target.value)}
+            placeholder="Rating (1-5)"
             className="border p-2 rounded flex-1"
           />
         </div>
@@ -221,6 +246,14 @@ export default function AddAnime() {
           <p className="text-red-500 text-sm">{errors.rating}</p>
         )}
 
+        {existingImage && (
+          <img
+            src={existingImage}
+            alt="Current"
+            className="w-40 rounded border"
+          />
+        )}
+
         <input
           ref={fileInputRef}
           type="file"
@@ -228,16 +261,13 @@ export default function AddAnime() {
           onChange={(e) => setImageFile(e.target.files[0])}
           className="border p-2 rounded"
         />
-        {errors.image && (
-          <p className="text-red-500 text-sm">{errors.image}</p>
-        )}
 
         <input
           type="number"
           min="1"
-          placeholder="Number of Episodes"
           value={episodes}
           onChange={(e) => setEpisodes(e.target.value)}
+          placeholder="Number of Episodes"
           className="border p-2 rounded"
         />
         {errors.episodes && (
@@ -257,9 +287,9 @@ export default function AddAnime() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-600 text-white p-2 rounded disabled:opacity-50"
+          className="bg-green-600 text-white p-2 rounded disabled:opacity-50"
         >
-          {loading ? "Adding..." : "Add Anime"}
+          {loading ? "Updating..." : "Update Anime"}
         </button>
       </form>
     </div>

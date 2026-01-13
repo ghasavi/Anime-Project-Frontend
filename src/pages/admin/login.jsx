@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const backendURL = "http://localhost:3000/api"; // adjust if needed
+  const navigate = useNavigate();
 
   // ================= EMAIL/PASSWORD LOGIN =================
   const handleLogin = async (e) => {
@@ -24,7 +26,7 @@ export default function Login() {
       });
       localStorage.setItem("adminToken", data.token);
       toast.success("Login successful!");
-      window.location.href = "/admin/dashboard";
+      window.location.href = "/admin";
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     } finally {
@@ -109,7 +111,7 @@ export default function Login() {
                   );
                   localStorage.setItem("adminToken", data.token);
                   toast.success("Google login success!");
-                  window.location.href = "/admin/dashboard";
+                  window.location.href = "/admin";
                 } catch (err) {
                   toast.error(err.response?.data?.message || "Google login failed");
                 }
@@ -119,12 +121,13 @@ export default function Login() {
           </div>
 
           <button
-            type="button"
-            className="text-sm underline mt-3"
-            onClick={handleSendOtp}
-          >
-            Forgot Password?
-          </button>
+  type="button"
+  className="text-sm underline mt-3"
+  onClick={() => navigate("/admin/forgot-password")}
+>
+  Forgot Password?
+</button>
+
         </>
       )}
 

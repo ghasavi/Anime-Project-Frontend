@@ -2,6 +2,8 @@ import { Link, Routes, Route, useLocation, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react";
 import ManageAnime from "./manageAnime";
 import AddAnime from "./addAnime";
+import ManageAdmins from "./manageAdmins";
+import EditAnime from "./editAnime";
 import api from "../../utils/axios";
 
 export default function AdminDashboard() {
@@ -55,12 +57,12 @@ export default function AdminDashboard() {
           </li>
           <li>
             <Link
-              to="/admin/add-anime"
+              to="/admin/manage-admins"
               className={`block p-2 rounded ${
-                location.pathname === "/admin/add-anime" ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+                location.pathname === "/admin/manage-admins" ? "bg-blue-500 text-white" : "hover:bg-gray-200"
               }`}
             >
-              Add Anime
+              Manage Admins
             </Link>
           </li>
         </ul>
@@ -81,6 +83,8 @@ export default function AdminDashboard() {
           <Route path="manage-anime" element={<ManageAnime />} />
           {/* Add Anime form */}
           <Route path="add-anime" element={<AddAnime />} />
+          <Route path="manage-admins" element={<ManageAdmins />} />
+          <Route path="edit-anime/:id" element={<EditAnime />} />
           {/* Optional: catch-all for undefined nested routes */}
           <Route path="*" element={<div>Page not found</div>} />
         </Routes>
