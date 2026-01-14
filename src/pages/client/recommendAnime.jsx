@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import RecommendedAnimeCard from "../../components/RecommendedAnimeCard.jsx";
+import { Sparkles, ArrowRight, RefreshCw, Filter, Calendar, Star, Film, CheckCircle, ChevronRight } from "lucide-react";
 
 const GENRES = ["Action","Adventure","Fantasy","Romance","Comedy","Drama","Horror","Sci-Fi","Slice of Life","Sports"];
 const YEARS = ["Last 10 Years", "Last 5 Years", "This Year", "I don't care"];
@@ -52,6 +53,7 @@ export default function RecommendAnime() {
   };
 
   const nextStep = () => setStep(prev => prev + 1);
+  const prevStep = () => setStep(prev => prev - 1);
 
   const handleRecommend = () => {
     let filtered = [...animes];
@@ -119,96 +121,347 @@ export default function RecommendAnime() {
     setNoResult(false);
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center" style={{
+      background: "linear-gradient(135deg, #070F2B 0%, #1B1A55 50%, #070F2B 100%)",
+      backgroundSize: "400% 400%",
+      animation: "gradientShift 15s ease infinite",
+    }}>
+      <style jsx>{`
+        @keyframes gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+      `}</style>
+      <div className="w-16 h-16 border-4 border-#535C91/30 border-t-#9290C3 rounded-full animate-spin"></div>
+    </div>
+  );
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">Recommend Me an Anime!</h2>
-
-      {/* Step Sections */}
-      {!recommendation && !noResult && step === 1 && (
-        <StepSection title="Select Genre(s):" options={GENRES} selected={filters.genres} multi onSelect={val => toggleSelection(val, "genres")} nextStep={nextStep} />
-      )}
-      {!recommendation && !noResult && step === 2 && (
-        <StepSection title="Select Year:" options={YEARS} selected={filters.year} onSelect={val => toggleSelection(val, "year")} nextStep={nextStep} />
-      )}
-      {!recommendation && !noResult && step === 3 && (
-        <StepSection title="Select Rating:" options={RATINGS} selected={filters.rating} onSelect={val => toggleSelection(val, "rating")} nextStep={nextStep} />
-      )}
-      {!recommendation && !noResult && step === 4 && (
-        <StepSection title="Select Number of Episodes:" options={EPISODES} selected={filters.episodes} onSelect={val => toggleSelection(val, "episodes")} nextStep={nextStep} />
-      )}
-      {!recommendation && !noResult && step === 5 && (
-        <StepSection title="Select Status:" options={STATUS} selected={filters.status} onSelect={val => toggleSelection(val, "status")} />
-      )}
-
-      {/* Get Recommendation Button */}
-      {!recommendation && !noResult && step === 5 && (
-        <button
-          onClick={handleRecommend}
-          className="bg-red-600 text-white px-6 py-3 rounded hover:bg-red-500 transition mt-4"
-        >
-          Get Recommendation
-        </button>
-      )}
-
-      {/* Recommendation Display */}
-{recommendation && (
-  <div className="mt-6">
-    <h3 className="text-xl font-bold mb-4">We recommend:</h3>
-    <RecommendedAnimeCard anime={recommendation} />
-    <button
-      onClick={handleRecommend}
-      className="mt-4 bg-red-600 text-white px-6 py-3 rounded hover:bg-red-500 transition"
+    <div 
+      className="min-h-screen"
+      style={{
+        background: "linear-gradient(135deg, #070F2B 0%, #1B1A55 50%, #070F2B 100%)",
+        backgroundSize: "400% 400%",
+        animation: "gradientShift 15s ease infinite",
+      }}
     >
-      Get Another Recommendation
-    </button>
-  </div>
-)}
+      <style jsx>{`
+        @keyframes gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+      `}</style>
 
+      {/* Floating Particles */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full opacity-5"
+            style={{
+              width: `${Math.random() * 300 + 50}px`,
+              height: `${Math.random() * 300 + 50}px`,
+              background: `radial-gradient(circle, #9290C3, transparent)`,
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animation: `float ${Math.random() * 20 + 10}s infinite ease-in-out`,
+              animationDelay: `${i * 0.5}s`,
+            }}
+          />
+        ))}
+      </div>
 
-      {/* No Result */}
-      {noResult && (
-        <div className="mt-6 text-center text-red-600 font-bold">
-          No recommendation found.{" "}
-          <button onClick={resetQuiz} className="underline text-blue-600">
-            Retake the Quiz
-          </button>
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center p-4 mb-4 rounded-2xl animate-float"
+               style={{
+                 background: "linear-gradient(45deg, #535C91, #1B1A55)",
+                 boxShadow: "0 8px 32px rgba(27, 26, 85, 0.4)"
+               }}>
+            <Sparkles className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-4xl font-bold text-white mb-3 tracking-tight">
+            Find Your Perfect Anime
+          </h1>
+          <p className="text-lg" style={{ color: '#9290C3' }}>
+            Answer a few questions for personalized recommendations
+          </p>
         </div>
-      )}
+
+        {/* Progress Bar */}
+        <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 shadow-2xl p-6 mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <Filter className="w-5 h-5" style={{ color: '#9290C3' }} />
+              Step {step} of 5
+            </h2>
+            <div className="text-sm" style={{ color: '#9290C3' }}>
+              {step * 20}% Complete
+            </div>
+          </div>
+          
+          <div className="w-full h-2 rounded-full bg-white/10 mb-2">
+            <div 
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                background: "linear-gradient(90deg, #535C91, #9290C3)",
+                width: `${step * 20}%`
+              }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Main Content Card */}
+        <div className="backdrop-blur-xl bg-white/5 rounded-2xl border border-white/10 shadow-2xl p-8">
+          {/* Step Sections */}
+          {!recommendation && !noResult && step === 1 && (
+            <StepSection 
+              title="Select Your Favorite Genre(s)" 
+              description="Choose one or multiple genres you enjoy"
+              icon={<Filter className="w-5 h-5" />}
+              options={GENRES} 
+              selected={filters.genres} 
+              multi 
+              onSelect={val => toggleSelection(val, "genres")} 
+              nextStep={nextStep}
+              step={step}
+              canGoBack={false}
+              prevStep={prevStep}
+            />
+          )}
+          {!recommendation && !noResult && step === 2 && (
+            <StepSection 
+              title="Release Year Preference" 
+              description="How recent do you want the anime to be?"
+              icon={<Calendar className="w-5 h-5" />}
+              options={YEARS} 
+              selected={filters.year} 
+              onSelect={val => toggleSelection(val, "year")} 
+              nextStep={nextStep}
+              step={step}
+              canGoBack={true}
+              prevStep={prevStep}
+            />
+          )}
+          {!recommendation && !noResult && step === 3 && (
+            <StepSection 
+              title="Minimum Rating" 
+              description="Quality filter based on user ratings"
+              icon={<Star className="w-5 h-5" />}
+              options={RATINGS} 
+              selected={filters.rating} 
+              onSelect={val => toggleSelection(val, "rating")} 
+              nextStep={nextStep}
+              step={step}
+              canGoBack={true}
+              prevStep={prevStep}
+            />
+          )}
+          {!recommendation && !noResult && step === 4 && (
+            <StepSection 
+              title="Episode Length" 
+              description="How much time do you want to invest?"
+              icon={<Film className="w-5 h-5" />}
+              options={EPISODES} 
+              selected={filters.episodes} 
+              onSelect={val => toggleSelection(val, "episodes")} 
+              nextStep={nextStep}
+              step={step}
+              canGoBack={true}
+              prevStep={prevStep}
+            />
+          )}
+          {!recommendation && !noResult && step === 5 && (
+            <StepSection 
+              title="Series Status" 
+              description="Do you prefer completed series or ongoing?"
+              icon={<CheckCircle className="w-5 h-5" />}
+              options={STATUS} 
+              selected={filters.status} 
+              onSelect={val => toggleSelection(val, "status")}
+              step={step}
+              canGoBack={true}
+              prevStep={prevStep}
+            />
+          )}
+
+          {/* Get Recommendation Button */}
+          {!recommendation && !noResult && step === 5 && (
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={handleRecommend}
+                className="group px-8 py-4 rounded-xl font-bold text-white transition-all duration-300 hover:scale-[1.02] flex items-center justify-center gap-3"
+                style={{
+                  background: "linear-gradient(45deg, #535C91, #1B1A55)",
+                  boxShadow: "0 4px 20px rgba(83, 92, 145, 0.3)"
+                }}
+              >
+                <span>Get My Recommendation</span>
+                <Sparkles className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+              </button>
+            </div>
+          )}
+
+          {/* Recommendation Display */}
+          {recommendation && (
+            <div className="mt-6">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-3">🎉 Perfect Match Found!</h3>
+                <p className="text-lg" style={{ color: '#9290C3' }}>Based on your preferences, we recommend:</p>
+              </div>
+              
+              <div className="flex justify-center">
+                <RecommendedAnimeCard anime={recommendation} />
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+                <button
+                  onClick={handleRecommend}
+                  className="group px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+                  style={{
+                    background: "linear-gradient(45deg, #535C91, #1B1A55)"
+                  }}
+                >
+                  <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform" />
+                  Try Another
+                </button>
+                <button
+                  onClick={resetQuiz}
+                  className="px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:scale-105 border"
+                  style={{
+                    borderColor: '#9290C3',
+                    color: '#9290C3',
+                    backgroundColor: 'rgba(146, 144, 195, 0.1)'
+                  }}
+                >
+                  Start Over
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* No Result */}
+          {noResult && (
+            <div className="text-center py-8">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-r from-#535C91/20 to-#1B1A55/20 flex items-center justify-center mx-auto mb-4">
+                <Filter className="w-10 h-10" style={{ color: '#9290C3' }} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-3">No Matches Found</h3>
+              <p className="mb-6" style={{ color: '#9290C3' }}>
+                No anime matches your current filters. Try broadening your preferences.
+              </p>
+              <button
+                onClick={resetQuiz}
+                className="px-6 py-3 rounded-lg text-white transition-all duration-300 hover:scale-105"
+                style={{
+                  background: "linear-gradient(45deg, #535C91, #1B1A55)"
+                }}
+              >
+                Adjust Filters
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
 
-// Reusable Step Section Component
-function StepSection({ title, options, selected, onSelect, nextStep, multi }) {
+// Updated Step Section Component
+function StepSection({ title, description, icon, options, selected, onSelect, nextStep, step, canGoBack, prevStep, multi }) {
   const isNextVisible = multi ? selected.length > 0 : selected;
 
   return (
-    <div className="mb-4">
-      <p className="font-semibold mb-2">{title}</p>
-      <div className="flex flex-wrap gap-3">
+    <div>
+      {/* Step Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-3 mb-3">
+          {icon}
+          <h2 className="text-2xl font-bold text-white">{title}</h2>
+        </div>
+        <p className="text-lg" style={{ color: '#9290C3' }}>{description}</p>
+      </div>
+
+      {/* Options Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
         {options.map(opt => (
           <button
             key={opt}
             onClick={() => onSelect(opt)}
-            className={`px-4 py-2 rounded-full border transition ${
-              multi ? (selected.includes(opt) ? "bg-blue-600 text-white" : "bg-white text-gray-800 hover:bg-gray-200")
-                    : (selected === opt ? "bg-yellow-400 text-blue-900" : "bg-white text-gray-800 hover:bg-gray-200")
+            className={`p-4 rounded-xl border transition-all duration-300 text-left group hover:scale-[1.02] ${
+              multi 
+                ? (selected.includes(opt) 
+                    ? 'border-transparent text-white' 
+                    : 'border-white/10 text-#9290C3 hover:border-#535C91/50')
+                : (selected === opt 
+                    ? 'border-transparent text-white' 
+                    : 'border-white/10 text-#9290C3 hover:border-#535C91/50')
             }`}
+            style={{
+              background: multi 
+                ? (selected.includes(opt) 
+                    ? 'linear-gradient(45deg, #535C91, #1B1A55)' 
+                    : 'rgba(146, 144, 195, 0.1)')
+                : (selected === opt 
+                    ? 'linear-gradient(45deg, #535C91, #1B1A55)' 
+                    : 'rgba(146, 144, 195, 0.1)')
+            }}
           >
-            {opt}
+            <div className="flex items-center justify-between">
+              <span className="font-medium">{opt}</span>
+              <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </div>
           </button>
         ))}
       </div>
-      {nextStep && isNextVisible && (
-        <button
-          onClick={nextStep}
-          className="mt-3 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-500 transition"
-        >
-          Next
-        </button>
-      )}
+
+      {/* Navigation Buttons */}
+      <div className="flex justify-between">
+        {canGoBack && (
+          <button
+            onClick={prevStep}
+            className="px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:scale-105 flex items-center gap-2"
+            style={{
+              color: '#9290C3',
+              backgroundColor: 'rgba(146, 144, 195, 0.1)'
+            }}
+          >
+            <ArrowRight className="w-4 h-4 rotate-180" />
+            Previous
+          </button>
+        )}
+        
+        {nextStep && isNextVisible && (
+          <button
+            onClick={nextStep}
+            className="ml-auto group px-6 py-3 rounded-lg font-semibold text-white transition-all duration-300 hover:scale-105 flex items-center gap-2"
+            style={{
+              background: "linear-gradient(45deg, #535C91, #1B1A55)"
+            }}
+          >
+            Next Step
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </button>
+        )}
+      </div>
+
+      {/* Selection Indicator */}
+      <div className="mt-6 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full"
+             style={{ backgroundColor: 'rgba(146, 144, 195, 0.15)' }}>
+          <span className="text-sm" style={{ color: '#9290C3' }}>
+            {multi 
+              ? `${selected.length} genre${selected.length !== 1 ? 's' : ''} selected`
+              : selected}
+          </span>
+        </div>
+      </div>
     </div>
   );
 }

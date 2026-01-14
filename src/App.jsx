@@ -7,8 +7,12 @@ import Header from "./components/header";
 import RecommendAnime from "./pages/client/recommendAnime";
 import AnimeOverview from "./pages/client/animeOverview";
 import Genre from "./pages/client/genres";
+import Footer from "./components/footer";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import ForgotPassword from "./pages/admin/forgotPassword";
+
+import PublicLayout from "./layouts/PublicLayout";
+import AdminLayout from "./layouts/AdminLayout";
 
 function App() {
   return (
@@ -23,10 +27,10 @@ function App() {
           <Route path="/anime/:id" element={<AnimeOverview />} />
           <Route path="/recommend" element={<RecommendAnime />} />
 
-          {/* CHANGE THIS: use /admin/* instead of /admin/dashboard */}
           <Route path="/admin/*" element={<AdminDashboard />} />
           <Route path="/admin/forgot-password" element={<ForgotPassword />} />
         </Routes>
+        <Footer />
       </Router>
     </GoogleOAuthProvider>
   );
