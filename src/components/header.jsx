@@ -25,8 +25,11 @@ export default function Header() {
               background: `radial-gradient(circle, #535C91, transparent)`,
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-              animation: `float ${Math.random() * 20 + 10}s infinite ease-in-out`,
-              animationDelay: `${i * 0.5}s`,
+              animationName: "float",
+  animationDuration: `${Math.random() * 20 + 10}s`,
+  animationTimingFunction: "ease-in-out",
+  animationIterationCount: "infinite",
+  animationDelay: `${i * 0.5}s`,
             }}
           />
         ))}

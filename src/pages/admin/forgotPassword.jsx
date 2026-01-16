@@ -68,7 +68,7 @@ export default function ForgotPassword() {
         animation: "gradientShift 15s ease infinite",
       }}
     >
-      <style jsx>{`
+      <style >{`
         @keyframes gradientShift {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }

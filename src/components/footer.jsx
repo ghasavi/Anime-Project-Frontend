@@ -73,7 +73,6 @@ export default function Footer() {
             <div className="flex items-center gap-3 pt-4">
               {[
                 { icon: <Instagram className="w-4 h-4" />, label: "Instagram" },
-                { icon: <Twitter className="w-4 h-4" />, label: "Twitter" },
                 { icon: <Mail className="w-4 h-4" />, label: "Email" }
               ].map((social) => (
                 <motion.a
@@ -163,22 +162,9 @@ export default function Footer() {
               Get notified about new anime recommendations and features.
             </p>
             <div className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 px-3 py-2 bg-[#070F2B]/50 border border-[#535C91]/30 rounded-lg text-white text-sm placeholder-[#9290C3]/50 focus:outline-none focus:border-[#9290C3] backdrop-blur-sm"
-                />
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-4 py-2 bg-gradient-to-r from-[#535C91] to-[#1B1A55] text-white text-sm rounded-lg hover:opacity-90 transition-opacity font-medium"
-                >
-                  Subscribe
-                </motion.button>
-              </div>
+              
               <p className="text-xs text-[#9290C3]/50">
-                We respect your privacy. Unsubscribe at any time.
+                We respect your privacy. 
               </p>
             </div>
           </motion.div>
@@ -271,7 +257,7 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-[#1B1A55]/30 to-[#070F2B]/30 border border-[#535C91]/20 rounded-lg backdrop-blur-sm">
             <Package className="w-3 h-3 text-[#9290C3]" />
-            <span className="text-xs text-[#9290C3]">Advanced AI</span>
+            <span className="text-xs text-[#9290C3]">Advanced</span>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-[#1B1A55]/30 to-[#070F2B]/30 border border-[#535C91]/20 rounded-lg backdrop-blur-sm">
             <Sparkles className="w-3 h-3 text-[#9290C3]" />

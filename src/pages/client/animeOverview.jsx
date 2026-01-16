@@ -34,7 +34,7 @@ export default function AnimeOverview() {
       backgroundSize: "400% 400%",
       animation: "gradientShift 15s ease infinite",
     }}>
-      <style jsx>{`
+      <style >{`
         @keyframes gradientShift {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -50,7 +50,7 @@ export default function AnimeOverview() {
       backgroundSize: "400% 400%",
       animation: "gradientShift 15s ease infinite",
     }}>
-      <style jsx>{`
+      <style >{`
         @keyframes gradientShift {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -80,7 +80,7 @@ export default function AnimeOverview() {
         animation: "gradientShift 15s ease infinite",
       }}
     >
-      <style jsx>{`
+      <style >{`
         @keyframes gradientShift {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }

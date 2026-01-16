@@ -14,7 +14,7 @@ export default function Home() {
         animation: "gradientShift 15s ease infinite",
       }}
     >
-      <style jsx>{`
+      <style >{`
         @keyframes gradientShift {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -187,7 +187,7 @@ export default function Home() {
             {[
               {
                 icon: <Brain className="w-10 h-10" style={{ color: '#9290C3' }} />,
-                title: "Smart AI Matching",
+                title: "Smart Matching",
                 description: "Advanced algorithms analyze your preferences to find perfect anime matches",
               },
               {
@@ -291,12 +291,12 @@ export default function Home() {
                   {[
                     { 
                       icon: <Users className="w-6 h-6" style={{ color: '#9290C3' }} />, 
-                      value: "10K+", 
-                      label: "Active Anime Fans", 
+                      value: "1", 
+                      label: "Active Admins", 
                     },
                     { 
                       icon: <BookOpen className="w-6 h-6" style={{ color: '#9290C3' }} />, 
-                      value: "5K+", 
+                      value: "300+", 
                       label: "Anime Titles", 
                     },
                     { 
@@ -306,7 +306,7 @@ export default function Home() {
                     },
                     { 
                       icon: <Star className="w-6 h-6" style={{ color: '#9290C3' }} />, 
-                      value: "1M+", 
+                      value: "100+", 
                       label: "Recommendations", 
                     }
                   ].map((stat, idx) => (
@@ -360,7 +360,7 @@ export default function Home() {
               <div className="space-y-6">
                 {[
                   { number: "1", title: "Answer Questions", desc: "Share your preferences through our intuitive quiz" },
-                  { number: "2", title: "AI Analysis", desc: "Our algorithms analyze thousands of data points" },
+                  { number: "2", title: "Analysis", desc: "Our algorithms analyze thousands of data points" },
                   { number: "3", title: "Get Recommendations", desc: "Receive personalized anime suggestions" },
                 ].map((step, idx) => (
                   <motion.div 

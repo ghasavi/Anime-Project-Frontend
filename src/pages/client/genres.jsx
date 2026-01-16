@@ -72,7 +72,7 @@ export default function Genre() {
         animation: "gradientShift 15s ease infinite",
       }}
     >
-      <style jsx>{`
+      <style >{`
         @keyframes gradientShift {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -95,8 +95,11 @@ export default function Genre() {
               background: `radial-gradient(circle, #9290C3, transparent)`,
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-              animation: `float ${Math.random() * 20 + 10}s infinite ease-in-out`,
-              animationDelay: `${i * 0.5}s`,
+             animationName: "float",
+  animationDuration: `${Math.random() * 20 + 10}s`,
+  animationTimingFunction: "ease-in-out",
+  animationIterationCount: "infinite",
+  animationDelay: `${i * 0.5}s`,
             }}
           />
         ))}
