@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Home, Film, LayoutDashboard, LogOut, LogIn, Sparkles, Shield } from "lucide-react";
 import { motion } from "framer-motion";
+import logo from "../assets/logo.png"; // adjust path if needed
+
 
 export default function Header() {
   const navigate = useNavigate();
@@ -47,9 +49,14 @@ export default function Header() {
             <Link to="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <div className="absolute -inset-2 bg-gradient-to-r from-[#535C91] to-[#9290C3] rounded-lg blur opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-                <div className="relative w-9 h-9 rounded-lg bg-gradient-to-br from-[#535C91] to-[#1B1A55] flex items-center justify-center shadow-md">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
+                <div className="relative w-9 h-9 rounded-lg overflow-hidden shadow-md bg-white">
+  <img
+    src={logo}
+    alt="AniRec Logo"
+    className="w-full h-full object-contain"
+  />
+</div>
+
               </div>
               <div className="flex flex-col">
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-[#1B1A55] to-[#535C91] bg-clip-text text-transparent">
