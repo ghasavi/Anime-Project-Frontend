@@ -3,9 +3,9 @@ import axios from "axios";
 import RecommendedAnimeCard from "../../components/RecommendedAnimeCard.jsx";
 import { Sparkles, ArrowRight, RefreshCw, Filter, Calendar, Star, Film, CheckCircle, ChevronRight } from "lucide-react";
 
-const GENRES = ["Action","Adventure","Fantasy","Romance","Comedy","Drama","Horror","Sci-Fi","Slice of Life","Sports"];
+const GENRES = ["Action","Adventure","Dark Fantasy","Fantasy","Romance","Comedy","Drama","Horror","Sci-Fi","Slice of Life","Sports","Horror","Mystery","Thriller","Isekai","Supernatural","Historical"];
 const YEARS = ["Last 10 Years", "Last 5 Years", "This Year", "I don't care"];
-const RATINGS = ["5 - Popular", "4+", "3+", "I don't care"];
+const RATINGS = ["Highest Rated", "Most Popular", "Most Favored", "I don't care"];
 const EPISODES = ["1-12","1-24","1-50","1-100","100+","I don't care"];
 const STATUS = ["Ongoing","Completed","I don't care"];
 
@@ -77,9 +77,9 @@ export default function RecommendAnime() {
     filtered = filtered.filter(a => {
       if (!a.rating) return false;
       switch(filters.rating) {
-        case "5 - Popular": return a.rating >= 5;
-        case "4+": return a.rating >= 4;
-        case "3+": return a.rating >= 3;
+        case "Highest Rated": return a.rating >= 5;
+        case "Most Popular": return a.rating >= 4;
+        case "Most Favored": return a.rating >= 3;
         case "I don't care": return true;
         default: return true;
       }

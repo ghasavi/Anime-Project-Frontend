@@ -21,9 +21,7 @@ import {
 } from "lucide-react";
 
 const GENRE_OPTIONS = [
-  "Action", "Adventure", "Fantasy", "Romance", "Comedy",
-  "Drama", "Horror", "Sci-Fi", "Slice of Life", "Sports",
-  "Mystery", "Supernatural", "Mecha", "Psychological", "Thriller"
+  "Action","Adventure","Dark Fantasy","Fantasy","Romance","Comedy","Drama","Horror","Sci-Fi","Slice of Life","Sports","Horror","Mystery","Thriller","Isekai","Supernatural","Historical"
 ];
 
 const STATUS_OPTIONS = [
