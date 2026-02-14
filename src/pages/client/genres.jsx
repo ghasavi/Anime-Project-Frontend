@@ -5,8 +5,7 @@ import AnimeCard from "../../components/AnimeCard.jsx";
 import { Filter, Search, SortDesc, Sparkles, X, ChevronDown, Film } from "lucide-react";
 
 const GENRE_OPTIONS = [
-  "Action", "Adventure", "Fantasy", "Romance", "Comedy",
-  "Drama", "Horror", "Sci-Fi", "Slice of Life", "Sports"
+  "Action","Adventure","Dark Fantasy","Fantasy","Romance","Comedy","Drama","Horror","Sci-Fi","Slice of Life","Sports","Mystery","Thriller","Isekai","Supernatural","Historical"
 ];
 
 export default function Genre() {
