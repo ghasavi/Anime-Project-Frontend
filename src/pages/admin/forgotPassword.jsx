@@ -12,7 +12,7 @@ export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const backendURL = "http://localhost:3000/api";
+  const backendURL = import.meta.env.VITE_BACKEND_URL + "/api";
   const navigate = useNavigate();
 
   const handleSendOtp = async () => {

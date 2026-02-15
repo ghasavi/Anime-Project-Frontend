@@ -1,7 +1,8 @@
 import axios from "axios";
 
+// add /api here, not in the env variable
 const api = axios.create({
-  baseURL: "http://localhost:3000/api", // your backend base URL
+  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api` || "http://localhost:5000/api",
   // optional: headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` }
 });
 

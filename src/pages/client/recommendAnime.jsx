@@ -23,7 +23,7 @@ export default function RecommendAnime() {
   const [noResult, setNoResult] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const backendURL = "http://localhost:3000/api/animes";
+  const backendURL = import.meta.env.VITE_BACKEND_URL + "/api/animes";
 
   useEffect(() => {
     const fetchAnimes = async () => {

@@ -21,7 +21,7 @@ export default function AdminActivity() {
   const [refreshing, setRefreshing] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  const backendURL = "http://localhost:3000/api/admin/active";
+  const backendURL = import.meta.env.VITE_BACKEND_URL + "/api/admin/active";
 
   const fetchAdmins = async (showToast = false) => {
     if (!refreshing) setRefreshing(true);

@@ -10,7 +10,7 @@ export default function AnimeOverview() {
   const [anime, setAnime] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const backendURL = "http://localhost:3000/api/animes";
+  const backendURL = import.meta.env.VITE_BACKEND_URL + "/api/animes";
 
   useEffect(() => {
     const fetchAnime = async () => {

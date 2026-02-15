@@ -16,7 +16,7 @@ export default function Genre() {
   const [sortBy, setSortBy] = useState("");
   const [search, setSearch] = useState("");
 
-  const backendURL = "http://localhost:3000/api/animes";
+  const backendURL = import.meta.env.VITE_BACKEND_URL + "/api/animes";
 
   useEffect(() => {
     const fetchAnimes = async () => {

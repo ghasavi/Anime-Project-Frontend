@@ -46,7 +46,7 @@ export default function AddAnime() {
   const [errors, setErrors] = useState({});
 
   const fileInputRef = useRef(null);
-  const backendURL = "http://localhost:3000/api/animes";
+  const backendURL = `${import.meta.env.VITE_BACKEND_URL}/api/animes`;
 
   const toggleGenre = (genre) => {
     setGenres((prev) =>
