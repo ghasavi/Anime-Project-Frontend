@@ -14,7 +14,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const backendURL = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
+  const backendURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3000/api";
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
