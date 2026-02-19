@@ -3,10 +3,10 @@ import axios from "axios";
 import RecommendedAnimeCard from "../../components/RecommendedAnimeCard.jsx";
 import { Sparkles, ArrowRight, RefreshCw, Filter, Calendar, Star, Film, CheckCircle, ChevronRight } from "lucide-react";
 
-const GENRES = ["Action","Adventure","Dark Fantasy","Fantasy","Romance","Comedy","Drama","Horror","Sci-Fi","Slice of Life","Sports","Horror","Mystery","Thriller","Isekai","Supernatural","Historical"];
+const GENRES = ["Action","Adventure","Dark Fantasy","Fantasy","Romance","Comedy","Drama","Horror","Sci-Fi","Slice of Life","Sports","Mystery","Thriller","Isekai","Supernatural","Historical"];
 const YEARS = ["Last 10 Years", "Last 5 Years", "This Year", "I don't care"];
 const RATINGS = ["Highest Rated", "Most Popular", "Most Favored", "I don't care"];
-const EPISODES = ["1-12","1-24","1-50","1-100","100+","I don't care"];
+const EPISODES = ["1","1-12","1-24","1-50","1-100","100+","I don't care"];
 const STATUS = ["Ongoing","Completed","I don't care"];
 
 export default function RecommendAnime() {
@@ -88,6 +88,7 @@ export default function RecommendAnime() {
     filtered = filtered.filter(a => {
       if (!a.episodes) return true;
       switch(filters.episodes) {
+        case "1": return a.episodes === 1;
         case "1-12": return a.episodes >=1 && a.episodes <=12;
         case "1-24": return a.episodes >=1 && a.episodes <=24;
         case "1-50": return a.episodes >=1 && a.episodes <=50;
