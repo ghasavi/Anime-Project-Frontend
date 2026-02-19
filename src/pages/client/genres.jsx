@@ -15,8 +15,15 @@ export default function Genre() {
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [sortBy, setSortBy] = useState("");
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(12); // number of anime per page
 
   const backendURL = import.meta.env.VITE_BACKEND_URL + "/api/animes";
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedGenre, sortBy, search]);
 
   useEffect(() => {
     const fetchAnimes = async () => {
@@ -56,10 +63,22 @@ export default function Genre() {
     setFilteredAnimes(temp);
   }, [selectedGenre, sortBy, search, animes]);
 
+  // Pagination logic
+  const indexOfLastAnime = currentPage * itemsPerPage;
+  const indexOfFirstAnime = indexOfLastAnime - itemsPerPage;
+  const currentAnimes = filteredAnimes.slice(indexOfFirstAnime, indexOfLastAnime);
+
+  const totalPages = Math.ceil(filteredAnimes.length / itemsPerPage);
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
+
   const clearFilters = () => {
     setSelectedGenre("All");
     setSortBy("");
     setSearch("");
+    setCurrentPage(1);
   };
 
   return (
@@ -94,11 +113,11 @@ export default function Genre() {
               background: `radial-gradient(circle, #9290C3, transparent)`,
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
-             animationName: "float",
-  animationDuration: `${Math.random() * 20 + 10}s`,
-  animationTimingFunction: "ease-in-out",
-  animationIterationCount: "infinite",
-  animationDelay: `${i * 0.5}s`,
+              animationName: "float",
+              animationDuration: `${Math.random() * 20 + 10}s`,
+              animationTimingFunction: "ease-in-out",
+              animationIterationCount: "infinite",
+              animationDelay: `${i * 0.5}s`,
             }}
           />
         ))}
@@ -262,13 +281,60 @@ export default function Genre() {
               <p style={{ color: '#9290C3' }}>Loading anime library...</p>
             </div>
           ) : filteredAnimes.length ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredAnimes.map((anime) => (
-                <div key={anime._id} className="transform transition-transform duration-300 hover:scale-[1.02]">
-                  <AnimeCard anime={anime} />
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {currentAnimes.map((anime) => (
+                  <div key={anime._id} className="transform transition-transform duration-300 hover:scale-[1.02]">
+                    <AnimeCard anime={anime} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center mt-8 gap-2">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className={`px-3 py-1 rounded transition-all duration-300 ${
+                      currentPage === 1 
+                        ? "opacity-50 cursor-not-allowed bg-white/5" 
+                        : "hover:scale-105 bg-white/10 hover:bg-white/20"
+                    }`}
+                    style={{ color: '#9290C3' }}
+                  >
+                    Previous
+                  </button>
+
+                  {pageNumbers.map((num) => (
+                    <button
+                      key={num}
+                      onClick={() => setCurrentPage(num)}
+                      className={`px-3 py-1 rounded transition-all duration-300 hover:scale-105 ${
+                        currentPage === num 
+                          ? "bg-gradient-to-r from-#535C91 to-#1B1A55 text-white" 
+                          : "bg-white/10 text-#9290C3 hover:bg-white/20"
+                      }`}
+                    >
+                      {num}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className={`px-3 py-1 rounded transition-all duration-300 ${
+                      currentPage === totalPages 
+                        ? "opacity-50 cursor-not-allowed bg-white/5" 
+                        : "hover:scale-105 bg-white/10 hover:bg-white/20"
+                    }`}
+                    style={{ color: '#9290C3' }}
+                  >
+                    Next
+                  </button>
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           ) : (
             <div className="text-center py-12">
               <div className="w-20 h-20 rounded-full bg-gradient-to-r from-#535C91/20 to-#1B1A55/20 flex items-center justify-center mx-auto mb-4">
