@@ -16,7 +16,7 @@ export default function Genre() {
   const [sortBy, setSortBy] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(12); // number of anime per page
+  const [itemsPerPage] = useState(15); // 15 items per page (5 columns x 3 rows)
 
   const backendURL = import.meta.env.VITE_BACKEND_URL + "/api/animes";
 
@@ -282,9 +282,13 @@ export default function Genre() {
             </div>
           ) : filteredAnimes.length ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {/* 5 columns grid with smaller cards and increased gap */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 md:gap-6 lg:gap-7">
                 {currentAnimes.map((anime) => (
-                  <div key={anime._id} className="transform transition-transform duration-300 hover:scale-[1.02]">
+                  <div 
+                    key={anime._id} 
+                    className="transform transition-all duration-300 hover:scale-[1.03] hover:z-10 max-w-[200px] mx-auto w-full"
+                  >
                     <AnimeCard anime={anime} />
                   </div>
                 ))}
@@ -292,7 +296,7 @@ export default function Genre() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-center mt-8 gap-2">
+                <div className="flex flex-wrap justify-center mt-10 gap-2">
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
@@ -306,7 +310,8 @@ export default function Genre() {
                     Previous
                   </button>
 
-                  {pageNumbers.map((num) => (
+                  {/* Show limited page numbers for better UX */}
+                  {pageNumbers.slice(0, 5).map((num) => (
                     <button
                       key={num}
                       onClick={() => setCurrentPage(num)}
@@ -319,6 +324,22 @@ export default function Genre() {
                       {num}
                     </button>
                   ))}
+                  
+                  {totalPages > 5 && (
+                    <>
+                      <span className="px-2 py-1 text-#9290C3">...</span>
+                      <button
+                        onClick={() => setCurrentPage(totalPages)}
+                        className={`px-3 py-1 rounded transition-all duration-300 hover:scale-105 ${
+                          currentPage === totalPages 
+                            ? "bg-gradient-to-r from-#535C91 to-#1B1A55 text-white" 
+                            : "bg-white/10 text-#9290C3 hover:bg-white/20"
+                        }`}
+                      >
+                        {totalPages}
+                      </button>
+                    </>
+                  )}
 
                   <button
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}

@@ -5,11 +5,11 @@ export default function AnimeCard({ anime }) {
 
   return (
     <div
-      className="group cursor-pointer"
+      className="group cursor-pointer w-full"
       onClick={() => navigate(`/anime/${anime._id}`)}
     >
-      {/* Even Larger Card */}
-      <div className="relative w-64 h-96 bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-400 border-2 border-transparent group-hover:border-#1B1A55">
+      {/* Card with responsive width instead of fixed */}
+      <div className="relative w-full aspect-[2/3] bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-400 border-2 border-transparent group-hover:border-#1B1A55">
         
         {/* Full height image */}
         <div className="relative h-full w-full">
@@ -27,7 +27,7 @@ export default function AnimeCard({ anime }) {
             <div className="relative">
               {/* Text shadow for better readability */}
               <div className="absolute inset-0 bg-#070F2B blur-lg opacity-0 group-hover:opacity-30 transition-opacity duration-500"></div>
-              <h2 className="relative text-2xl font-extrabold text-white text-center leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform group-hover:scale-105">
+              <h2 className="relative text-2xl font-extrabold text-white text-center leading-tight opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform group-hover:scale-105 line-clamp-3">
                 {anime.name}
               </h2>
             </div>
@@ -39,8 +39,8 @@ export default function AnimeCard({ anime }) {
           </div>
           
           {/* Name at bottom (disappears on hover) */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-6 group-hover:opacity-0 transition-opacity duration-300">
-            <h2 className="text-xl font-bold text-white text-center truncate">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-4 group-hover:opacity-0 transition-opacity duration-300">
+            <h2 className="text-base font-bold text-white text-center truncate">
               {anime.name}
             </h2>
           </div>
